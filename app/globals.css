@@ -118,3 +118,18 @@
     @apply bg-primary/5 text-foreground;
   }
 }
+
+@layer utilities {
+  .no-scroll::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+  }
+  .no-scroll {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    overflow: auto; /* Enables scrolling */
+  }
+}
+
+.background-custom {
+  background-color: oklch(0.1964 0.0168 268.77);
+}
