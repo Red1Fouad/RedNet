@@ -1,7 +1,12 @@
+import DetailNav from "@/app/components/DetailNav";
 import React from "react";
 
 const Page = () => {
-  return <div>Page</div>;
+  return (
+    <div>
+      <DetailNav />
+    </div>
+  );
 };
 
 export default Page;

@@ -2,8 +2,10 @@ import { Ellipsis, Heart, MessageCircle, Repeat2, Share } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import Button from "./Button";
+import Link from "next/link";
+import { PostType } from "@/types";
 
-const PostCard = () => {
+const PostCard = ({ post }: { post: PostType }) => {
   return (
     <div className="flex border-b p-3 gap-3 items-start">
       <div>
@@ -16,10 +18,12 @@ const PostCard = () => {
           <span className="font-bold capitalize">red2</span>
           <span className="font-light">@redtwo · 2h</span>
         </div>
-        <p className="">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui,
-          aperiam?
-        </p>
+        <Link href={`home/${post.id}`}>
+          <p className="mb-2">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui,
+            aperiam?
+          </p>
+        </Link>
         <div className="rounded-lg overflow-hidden">
           <Image
             src={"https://pbs.twimg.com/media/GE9yK3pXEAAq00b.jpg"}
