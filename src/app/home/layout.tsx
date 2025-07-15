@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import RightMenu from "../components/RightMenu";
-import LeftMenu from "../components/LeftMenu";
+import RightMenu from "@/components/RightMenu";
+import LeftMenu from "@/components/LeftMenu";
 
 export const metadata: Metadata = {
   title: "Red Net",

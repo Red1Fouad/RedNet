@@ -1,5 +1,5 @@
 import React from "react";
-import UserComponent from "@/app/components/UserComponent";
+import UserComponent from "@/components/UserComponent";
 import MenuDesktop from "./MenuDesktop";
 import Button from "./Button";
 import { SquarePen } from "lucide-react";

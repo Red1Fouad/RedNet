@@ -1,4 +1,4 @@
-import DetailNav from "@/app/components/DetailNav";
+import DetailNav from "@/components/DetailNav";
 import React from "react";
 
 const Page = () => {

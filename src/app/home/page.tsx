@@ -1,8 +1,8 @@
 import React from "react";
-import GlobalHeader from "@/app/components/GlobalHeader";
-import GlobalNav from "../components/GlobalNav";
-import { posts } from "@/data";
-import PostCard from "../components/PostCard";
+import GlobalHeader from "@/components/GlobalHeader";
+import GlobalNav from "@/components/GlobalNav";
+import { posts } from "../../../data";
+import PostCard from "@/components/PostCard";
 
 const Page = () => {
   console.log(posts);
