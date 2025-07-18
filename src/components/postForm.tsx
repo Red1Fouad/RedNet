@@ -1,4 +1,7 @@
+"use client";
 import { Button } from "@/components/ui/button";
+import { supabaseBrowser } from "@/supabase-utils/supabase-browser";
+import { useState } from "react";
 import {
   Dialog,
   DialogClose,
@@ -11,38 +14,96 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  ImageIcon,
+  ImagePlay,
+  SmileIcon,
+  SquarePen,
+  VideoIcon,
+} from "lucide-react";
+import Image from "next/image";
+import { Textarea } from "./ui/textarea";
+import { toast } from "sonner";
 
-export function DialogCloseButton() {
+export function PostForm() {
+  const [content, setContent] = useState("");
+  const [open, setOpen] = useState(false);
+  const supabase = supabaseBrowser();
+
+  async function CreatePost() {
+    const { user } = (await supabase.auth.getUser()).data;
+    console.log("user: ", user);
+    const { data, error } = await supabase
+      .from("posts")
+      .insert([{ content: content, user_id: user?.id }])
+      .select();
+    if (error) {
+      console.error("Error creating post:", error);
+      return;
+    }
+    if (data) {
+      toast("Success!", { description: "Post created successfully." });
+      setContent(""); // Clear the content after successful post creation
+      setOpen(false); // Close the dialog after posting
+    }
+
+    console.log("Creating post with content:", content);
+  }
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">Share</Button>
+    <Dialog onOpenChange={setOpen} open={open}>
+      <DialogTrigger asChild onClick={() => setOpen(true)}>
+        <Button
+          variant={"default"}
+          className="rounded-full cursor-pointer text-white"
+        >
+          <SquarePen className="w-5 h-5" />
+          <span>New Post</span>
+        </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Share link</DialogTitle>
-          <DialogDescription>
-            Anyone who has this link will be able to view this.
-          </DialogDescription>
+      <DialogContent showCloseButton={false} className="sm:max-w-md">
+        <DialogHeader className="flex-row justify-between w-full">
+          <DialogTitle className="sr-only">New Post</DialogTitle>
+          <DialogClose asChild>
+            <Button
+              className="rounded-full cursor-pointer hover:bg-primary"
+              type="button"
+              variant="ghost"
+            >
+              Cancel
+            </Button>
+          </DialogClose>
+          <Button
+            onClick={CreatePost}
+            className="rounded-full cursor-pointer text-white"
+            type="button"
+            variant="default"
+          >
+            Post
+          </Button>
         </DialogHeader>
-        <div className="flex items-center gap-2">
-          <div className="grid flex-1 gap-2">
-            <Label htmlFor="link" className="sr-only">
-              Link
-            </Label>
-            <Input
-              id="link"
-              defaultValue="https://ui.shadcn.com/docs/installation"
-              readOnly
+        <div className="grid grid-cols-1">
+          <div className="flex items-start gap-2">
+            <Image
+              src={"/assets/user/icon.jpg"}
+              alt="user"
+              height={50}
+              width={50}
+              className="rounded-full w-10 h-10"
+            />
+            <Textarea
+              value={content}
+              className=""
+              onChange={(e) => setContent(e.target.value)}
             />
           </div>
         </div>
         <DialogFooter className="sm:justify-start">
-          <DialogClose asChild>
-            <Button type="button" variant="secondary">
-              Close
-            </Button>
-          </DialogClose>
+          <div className="flex items-center gap-2">
+            <ImageIcon />
+            <VideoIcon />
+            <ImagePlay />
+            <SmileIcon />
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
