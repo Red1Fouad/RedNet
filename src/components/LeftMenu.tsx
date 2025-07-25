@@ -4,7 +4,7 @@ import MenuDesktop from "./MenuDesktop";
 import { LogOut, SquarePen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { logOut } from "@/actions/logOut";
-import { PostForm } from "./PostForm";
+import { PostForm } from "@/components/PostForm";
 
 const LeftMenu = () => {
   return (
