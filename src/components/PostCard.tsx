@@ -6,6 +6,7 @@ import { Button } from "./ui/button";
 import { supabaseServer } from "@/supabase-utils/supabase-server";
 import Likes from "./Likes";
 import { Like } from "@/types";
+import { OptionMenu } from "./OptionMenu";
 
 type PostCardProps = {
   post: {
@@ -70,15 +71,12 @@ const PostCard = async ({ post }: PostCardProps) => {
           <Button className="bg-transparent" size="icon" variant="secondary">
             <Repeat2 className="w-5 h-5" />
           </Button>
-          <Likes likes={data as Like[]} post_id={post.id} />
+          <Likes post_id={post.id} />
           <Button className="bg-transparent" size="icon" variant="secondary">
             {" "}
             <Share className="w-5 h-5" />
           </Button>
-          <Button className="bg-transparent" size="icon" variant="secondary">
-            {" "}
-            <Ellipsis className="w-5 h-5" />
-          </Button>
+          <OptionMenu post_id={post.id} />
         </div>
       </div>
     </div>
