@@ -1,36 +1,14 @@
-import { Ellipsis, Heart, MessageCircle, Repeat2, Share } from "lucide-react";
+"use client";
+import { MessageCircle, Repeat2, Share } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { supabaseServer } from "@/supabase-utils/supabase-server";
 import Likes from "./Likes";
-import { Like } from "@/types";
 import { OptionMenu } from "./OptionMenu";
+import { PostType } from "@/types";
 
-type PostCardProps = {
-  post: {
-    id: string;
-    user_id: string;
-    content: string;
-    image_url?: string | null;
-    created_at: string;
-    updated_at: string;
-  };
-};
-
-const PostCard = async ({ post }: PostCardProps) => {
-  const supabase = await supabaseServer();
-  // Ensure post.id is a string and matches the likes.post_id type
-  const { data, error } = await supabase
-    .from("likes")
-    .select("*")
-    .eq("post_id", post.id);
-  if (error) {
-    console.error("Error fetching likes:", error);
-  }
-  // console.log("Likes data for post", post.id, ":", data);
-
+const PostCard = ({ post }: { post: PostType }) => {
   return (
     <div className="flex border-b p-3 gap-3 items-start max-w-2xl w-full">
       <div>
@@ -73,7 +51,6 @@ const PostCard = async ({ post }: PostCardProps) => {
           </Button>
           <Likes post_id={post.id} />
           <Button className="bg-transparent" size="icon" variant="secondary">
-            {" "}
             <Share className="w-5 h-5" />
           </Button>
           <OptionMenu post_id={post.id} />

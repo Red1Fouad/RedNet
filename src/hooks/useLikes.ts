@@ -49,11 +49,14 @@ export function useLikes(postId: string) {
         .eq("user_id", userData.user.id);
       if (error) {
         console.error("Error removing like:", error);
+        return;
       } else {
         setLikes((prevLikes) =>
           prevLikes.filter((like) => like.user_id !== userData.user.id)
         );
       }
+      console.log("user dislikes");
+      setHasLiked(false);
     } else {
       // User has not liked the post, so we add a like
       const { error } = await supabase
@@ -67,35 +70,17 @@ export function useLikes(postId: string) {
           { post_id: postId, user_id: userData.user.id } as Like,
         ]);
       }
+      setHasLiked(true);
+      console.log("user likes");
     }
+    console.log(likes);
   }
 
   useEffect(() => {
     fetchLikes();
     checkIfLiked();
-    //console.log(hasLiked);
+    console.log(hasLiked);
+  }, [postId]);
 
-    const channel = supabase
-      .channel(`likes`)
-      .on(
-        "postgres_changes",
-        { event: "*", schema: "public", table: "likes" },
-        (payload) => {
-          if (payload.eventType === "INSERT") {
-            setLikes((prevLikes) => [...prevLikes, payload.new as Like]);
-          } else if (payload.eventType === "DELETE") {
-            setLikes((prevLikes) =>
-              prevLikes.filter((like) => like.id !== payload.old.id)
-            );
-          }
-          checkIfLiked(); // Re-check if the current user has liked the post
-        }
-      )
-      .subscribe();
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [supabase, postId, likes]);
-
-  return { likes, hasLiked, toggleLike };
+  return { likes, hasLiked, toggleLike, setLikes };
 }

@@ -12,8 +12,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   ImageIcon,
   ImagePlay,
@@ -24,8 +22,10 @@ import {
 import Image from "next/image";
 import { Textarea } from "./ui/textarea";
 import { toast } from "sonner";
+import { usePostStore } from "@/stores/usePostStore";
 
 export function PostForm() {
+  const { addPost } = usePostStore();
   const [content, setContent] = useState("");
   const [open, setOpen] = useState(false);
   const supabase = supabaseBrowser();
@@ -36,12 +36,14 @@ export function PostForm() {
     const { data, error } = await supabase
       .from("posts")
       .insert([{ content: content, user_id: user?.id }])
-      .select();
+      .select()
+      .single();
     if (error) {
       console.error("Error creating post:", error);
       return;
     }
     if (data) {
+      addPost(data); // Add the new post to the store
       toast("Success!", { description: "Post created successfully." });
       setContent(""); // Clear the content after successful post creation
       setOpen(false); // Close the dialog after posting

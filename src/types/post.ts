@@ -1,8 +1,8 @@
 export type PostType = {
-  id: number;
+  id: string;
   titles: string;
   content: string;
-  imageURL: string;
+  image_url: string;
   userid: number;
   likes: number;
   shares: number;
