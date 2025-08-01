@@ -5,10 +5,14 @@ import React from "react";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import Likes from "./Likes";
+import { useReposts } from "@/hooks/useReposts";
+import Reposts from "./Reposts";
 import { OptionMenu } from "./OptionMenu";
 import { PostType } from "@/types";
 
 const PostCard = ({ post }: { post: PostType }) => {
+  const { reposts, hasReposted, toggleRepost } = useReposts(post.id); // can be removed if not used elsewhere
+
   return (
     <div className="flex border-b p-3 gap-3 items-start max-w-2xl w-full">
       <div>
@@ -46,9 +50,7 @@ const PostCard = ({ post }: { post: PostType }) => {
           <Button className="bg-transparent" size="icon" variant="secondary">
             <MessageCircle className="w-5 h-5" />
           </Button>
-          <Button className="bg-transparent" size="icon" variant="secondary">
-            <Repeat2 className="w-5 h-5" />
-          </Button>
+          <Reposts post_id={post.id} />
           <Likes post_id={post.id} />
           <Button className="bg-transparent" size="icon" variant="secondary">
             <Share className="w-5 h-5" />
